@@ -1,7 +1,5 @@
 # moqui-donation-form
 
-TD: Include steps to create Moqui app and clone this into component dir.
-
 1. Open Terminal and create folder donation-form wherever you want the form to live on your computer
 2. git clone https://github.com/moqui/moqui-framework.git
 3. cd into moqui-framework dir
