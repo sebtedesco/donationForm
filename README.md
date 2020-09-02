@@ -11,7 +11,7 @@
 3. cd into moqui-framework directory
 
     ```shell
-    cd cd moqui-framework
+    cd moqui-framework
     ```
 4. Install HiveMind component
 
@@ -56,15 +56,12 @@
 
     ```shell
     ../../
+
+    ./gradlew build
+
+    ./gradlew load
+
+    ./gradlew run
     ```
-    ```shell
-       ./gradlew build
-       ```
-    ```shell
-       ./gradlew load
-       ```
-    ```shell
-       ./gradlew run
-       ```
 
 2. Go to `http://localhost:8080` in your browser
