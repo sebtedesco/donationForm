@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/service-definition-2.1.xsd">
+
+    <service verb="create" noun="createPerson">
+        <in-parameters>
+            <parameter name="firstName" required="true"/>
+            <parameter name="lastName" required="true"/>
+            <parameter name="emailAddress" required="true">
+                <text-email message="Please enter a valid email"/>
+            </parameter>
+            <parameter name="contactNumber">
+                <matches regexp="^\d\d[-\. \d]*\d\d$" message="Please enter a valid phone number"/>
+            </parameter>
+            <parameter name="address1" required="true"/>
+            <parameter name="address2"/>
+            <parameter name="city" required="true"/>
+            <parameter name="stateProvinceGeoId" required="true"/>
+            <parameter name="postalCode" required="true"/>
+            <parameter name="amount" required="true"/>
+            <parameter name="cardNumber" required="true"/>
+            <parameter name="expireDate" required="true"/>
+            <parameter name="cardSecurityCode" required="true"/>
+        </in-parameters>
+
+        <out-parameters>
+            <parameter name="partyId"/>
+        </out-parameters>
+
+        <actions>
+
+            <service-call name="mantle.party.PartyServices.create#Person" in-map="context" out-map="context"/>
+            <service-call name="mantle.party.ContactServices.store#PartyContactInfo" in-map="context" out-map="context"/>
+
+
+            <service-call name="mantle.account.PaymentMethodServices.create#CreditCard" in-map="context" out-map="context"/>
+
+            <set field="fromPartyId" from="partyId"/>
+            <set field="toPartyId" value="100000"/>
+
+            <service-call name="mantle.account.PaymentServices.create#Payment" in-map="context" out-map="context"/>
+
+            <set field="paymentId" from="paymentId"/>
+            <set field="paymentGatewayConfigId" value="AuthorizeDotNetCimDemo"/>
+
+            <service-call name="AuthorizeDotNet.CimPaymentServices.authorize#Payment" in-map="context" out-map="context"/>
+            <service-call name="AuthorizeDotNet.CimPaymentServices.capture#Payment" in-map="context" out-map="context"/>
+        </actions>
+    </service>
+
+</services>
+
